@@ -26,16 +26,6 @@ jobs:
           printf "INSERT OR IGNORE INTO gallery values" >> insert.sql
           cat data | sed -E 's/(.*)\/(.*)/(\1,"\2"),/' >> insert.sql
           tail -n 1 data | sed -E 's/(.*)\/(.*)/(\1,"\2");/' >> insert.sql
-
-      - name: insert
-        run: |
-          before=`sqlite3 db.sqlite3 < count.sql`
-          sqlite3 db.sqlite3 < insert.sql
-          after=`sqlite3 db.sqlite3 < count.sql`
-          messages="update $((after-before)) at `date`"
-
-      - name: move files
-        run: |
           echo "messages=$messages"
           echo "messages=$messages" >> $GITHUB_ENV
           diff -N data.txt data || true
