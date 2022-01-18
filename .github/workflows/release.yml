@@ -25,7 +25,7 @@ jobs:
           count=`sqlite3 db.sqlite3 < count.sql`
           echo # `date +%Y-%m-%d` >> body.txt
           echo >> body.txt
-          totally $count records. >> body.txt
+          echo totally $count records. >> body.txt
       - name: release
         if: ${{ env.tag_existed == 'true' }}
         uses: softprops/action-gh-release@v1
