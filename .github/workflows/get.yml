@@ -1,6 +1,5 @@
 name: get
 on:
-  push:
   schedule:
     - cron: "0,30 * * * *"
 
@@ -29,7 +28,7 @@ jobs:
           before=`sqlite3 db.sqlite3 < count.sql`
           sqlite3 db.sqlite3 < insert.sql
           after=`sqlite3 db.sqlite3 < count.sql`
-          messages="update $((after-before)) at `date`"
+          messages="auto-commit: $((after-before)) new galleries added at `date`"
           echo "messages=$messages"
           echo "messages=$messages" >> $GITHUB_ENV
           diff -N data.txt data || true
