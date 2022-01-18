@@ -37,7 +37,7 @@ jobs:
       - name: move files
         run: |
           echo "messages=$messages" >> $GITHUB_ENV
-          diff -N data.txt data
+          diff -N data.txt data || true
           mv data data.txt
 
       - name: dump sql
