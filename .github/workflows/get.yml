@@ -35,6 +35,7 @@ jobs:
           messages="update $((after-before)) at `date`"
 
       - name: dump
+        run: |
           echo "messages=$messages" >> $GITHUB_ENV
           diff -N data.txt data
           mv data data.txt
