@@ -12,18 +12,29 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
+      - name: deps
+        run: |
+          sudo apt update && sudo apt install -y curl sqlite3
+
       - name: fetch
         run: |
-          sudo apt update && sudo apt install -y sqlite3
           curl "https://xml.e-hentai.org/ehg.xml" -o raw
+
+      - name: process
+        run: |
           cat raw | grep -P -o "https?://e[-x]hentai.org/g/(\d+)/(\w+)/" | cut -d "/" -f 5,6 | sort -n | uniq | tee data
           printf "INSERT OR IGNORE INTO gallery values" >> insert.sql
           cat data | sed -E 's/(.*)\/(.*)/(\1,"\2"),/' >> insert.sql
           tail -n 1 data | sed -E 's/(.*)\/(.*)/(\1,"\2");/' >> insert.sql
+
+      - name: insert
+        run: |
           before=`sqlite3 db.sqlite3 < count.sql`
           sqlite3 db.sqlite3 < insert.sql
           after=`sqlite3 db.sqlite3 < count.sql`
           messages="update $((after-before)) at `date`"
+
+      - name: dump
           echo "messages=$messages" >> $GITHUB_ENV
           diff -N data.txt data
           mv data data.txt
