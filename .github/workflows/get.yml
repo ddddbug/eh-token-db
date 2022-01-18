@@ -34,20 +34,23 @@ jobs:
           after=`sqlite3 db.sqlite3 < count.sql`
           messages="update $((after-before)) at `date`"
 
-      - name: dump
+      - name: move files
         run: |
           echo "messages=$messages" >> $GITHUB_ENV
           diff -N data.txt data
           mv data data.txt
-          sqlite3 db.sqlite3 .dump > dump.sql
 
       - name: dump sql
+        run: |
+          sqlite3 db.sqlite3 .dump > dump.sql
+
+      - name: upload sql
         uses: actions/upload-artifact@v2
         with:
           name: dump.sql
           path: dump.sql
 
-      - name: dump db
+      - name: upload db
         uses: actions/upload-artifact@v2
         with:
           name: db.sqlite3
