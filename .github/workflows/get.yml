@@ -65,4 +65,4 @@ jobs:
         with:
           message: "${{ env.messages }}"
           add: '["data.txt", "db.sqlite3"]'
-          tag: "${{ env.release_tag }} --force"
+          tag: "${{ env.tag }} --force"

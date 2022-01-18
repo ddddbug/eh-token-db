@@ -12,14 +12,14 @@ jobs:
         uses: actions/checkout@v2
       - name: Compute the release tag for yesterday and test if tag exists
         run: |
-          release_tag=v`date -d "yesterday" '+%Y.%m.%d'`
-          echo "release_tag=$release_tag" >> $GITHUB_ENV
-          if [[ -n "`git tag -l $release_tag`" ]]; then
+          tag=v`date -d "yesterday" '+%Y.%m.%d'`
+          echo "tag=$tag" >> $GITHUB_ENV
+          if [[ -n "`git tag -l $tag`" ]]; then
               echo "tag_existed=true" >> $GITHUB_ENV
-              echo $release_tag exists
+              echo $tag exists
           else
               echo "tag_existed=false" >> $GITHUB_ENV
-              echo $release_tag does not exist!
+              echo $tag does not exist!
           fi
           sqlite3 db.sqlite3 .dump > dump.sql
           count=`sqlite3 db.sqlite3 < count.sql`
@@ -31,7 +31,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body_path: body.txt
-          tag_name: ${{ env.release_tag }}
+          tag_name: ${{ env.tag }}
           target_commitish: main
           files: |
             dump.sql
