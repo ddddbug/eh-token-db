@@ -27,9 +27,9 @@ jobs:
           echo "messages=$messages" >> $GITHUB_ENV
           diff -N data.txt data
           mv data data.txt
+          sqlite3 db.sqlite3 .dump > dump.sql
 
       - name: dump sql
-        run: sqlite3 db.sqlite3 .dump > dump.sql
         uses: actions/upload-artifact@v2
         with:
           name: dump.sql

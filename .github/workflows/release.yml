@@ -21,14 +21,13 @@ jobs:
               echo "tag_existed=false" >> $GITHUB_ENV
               echo $release_tag does not exist!
           fi
-      - name: release
-        if: ${{ env.tag_existed == 'true' }}
-        run: |
           sqlite3 db.sqlite3 .dump > dump.sql
           count=`sqlite3 db.sqlite3 < count.sql`
           echo # `date +%Y-%m-%d` >> body.txt
           echo >> body.txt
           totally $count records. >> body.txt
+      - name: release
+        if: ${{ env.tag_existed == 'true' }}
         uses: softprops/action-gh-release@v1
         with:
           body_path: body.txt
