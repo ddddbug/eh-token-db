@@ -8,11 +8,14 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout and fetch all tags
         uses: actions/checkout@v2
+        run: |
+          git fetch --prune --unshallow --tags
+          git tag --list
+
       - name: Compute the release tag for yesterday and test if tag exists
         run: |
-          git tag -l
           tag=v`date -d "yesterday" '+%Y.%m.%d'`
           echo "tag=$tag" >> $GITHUB_ENV
           if [[ -n "`git tag -l $tag`" ]]; then
