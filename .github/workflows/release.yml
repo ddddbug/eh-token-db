@@ -1,6 +1,5 @@
 name: release
 on:
-  push:
   schedule:
     - cron: "20 0 * * 1"
 
@@ -29,9 +28,9 @@ jobs:
           fi
           sqlite3 db.sqlite3 .dump > dump.sql
           count=`sqlite3 db.sqlite3 < count.sql`
-          echo \# `date +%Y-%m-%d` >> body.txt
+          echo \# `date -d "yesterday" +%Y-%m-%d` >> body.txt
           echo >> body.txt
-          echo totally $count records. >> body.txt
+          echo $count records in total. >> body.txt
           cat body.txt
 
       - name: release
