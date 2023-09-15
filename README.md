@@ -1,3 +1,7 @@
+# Deprecated
+
+Check the proposed successor, [eh-token-db-v2](https://github.com/ddddbug/eh-token-db-v2).
+
 # eh-token-db
 
 An automation crawler powered by GitHub Action, to collect `gid`
